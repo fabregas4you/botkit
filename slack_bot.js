@@ -244,3 +244,19 @@ function formatUptime(uptime) {
     uptime = uptime + ' ' + unit;
     return uptime;
 }
+/*
+for userlocal API 
+ http://ai.userlocal.jp/
+*/
+controller.hears([''],'direct_mention', function (bot, message) {
+  var message_text = encodeURI(message.text);
+  var request = require( 'request' );
+  url = 'https://chatbot-api.userlocal.jp/api/chat?key=<YOUR API KEY>&message=' + message_text; 
+  request( url, function( error, response, body ){
+    if( !error && response.statusCode == 200 ){
+      var json = JSON.parse( body );
+      var bot_reply = json['result'];
+      bot.reply( message, bot_reply );
+    }
+  });
+});
